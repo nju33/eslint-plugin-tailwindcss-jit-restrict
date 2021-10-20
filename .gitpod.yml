@@ -1,0 +1,29 @@
+image:
+  file: .gitpod.Dockerfile
+
+# List the ports you want to expose and what to do when they are served. See https://www.gitpod.io/docs/config-ports/
+# ports:
+#   - port: 3000
+#     onOpen: open-preview
+# List the start up tasks. You can start them in parallel in multiple terminals. See https://www.gitpod.io/docs/config-start-tasks/
+tasks:
+  - before: |
+      curl -sSfL -o "$HOME/.ssh/github.gpg" https://github.com/nju33/.gitpod/raw/main/.ssh/github.gpg
+      gpg --quiet --batch --yes --decrypt --passphrase="$SSH_GITHUB_PASSPHRASE" --output "$HOME/.ssh/github" "$HOME/.ssh/github.gpg"
+      chmod 400 "$HOME/.ssh/github"
+      git submodule update --init
+
+      .gitpod/before.sh
+    init: .gitpod/init.sh
+    command: .gitpod/command.sh
+
+vscode:
+  extensions:
+    - gamunu.vscode-yarn
+    - eg2.vscode-npm-script
+    - dbaeumer.vscode-eslint
+    - esbenp.prettier-vscode
+    - TabNine.tabnine-vscode
+    - ExodiusStudios.comment-anchors
+    - mikestead.dotenv
+    - github.vscode-pull-request-github

@@ -1,0 +1,33 @@
+name: Update .gitpod submodule
+
+on:
+  repository_dispatch:
+    types:
+      - updated_gitpod_repo
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          token: "${{ secrets.PERSONAL_ACCESS_TOKEN }}"
+          submodules: "true"
+          fetch-depth: 0
+      - id: modified-gitpod
+        run: |
+          git config --global pull.ff only
+          git submodule foreach '[ "$(echo $name)" = '.gitpod' ] && git fetch origin main && git switch main && git pull origin main || :'
+          
+          if git ls-files -m | grep .gitpod > /dev/null; then
+            echo '::set-output name=VALUE::true'
+          else
+            echo '::set-output name=VALUE::false'
+          fi
+      - if: steps.modified-gitpod.outputs.VALUE == 'true'
+        run: |
+          git config --local user.name "github-actions[bot]"
+          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add .gitpod
+          git commit -m "chore(github-actions[bot]): update .gitpod at latest"
+          git push origin main

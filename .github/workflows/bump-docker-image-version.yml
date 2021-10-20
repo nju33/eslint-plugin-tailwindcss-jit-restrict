@@ -1,0 +1,30 @@
+name: Bump the docker image version 
+
+on:
+  repository_dispatch:
+    types:
+      - updated_docker_image
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      IMAGE_VERSION: ${{ github.event.client_payload.image }}
+    steps:
+      - uses: actions/checkout@v2
+      - run: echo "FROM nju33/gitpod-workspace:$IMAGE_VERSION" > .gitpod.Dockerfile
+      - id: modified-dockerfile
+        run: |
+          if git ls-files -m | grep .gitpod.Dockerfile > /dev/null; then
+            echo '::set-output name=VALUE::true'
+          else
+            echo '::set-output name=VALUE::false'
+          fi
+      - if: steps.modified-dockerfile.outputs.VALUE == 'true' 
+        run: |
+          git config --local user.name "github-actions[bot]"
+          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add .gitpod.Dockerfile
+          git commit -m "chore(github-actions[bot]): bump version of the .gitpod.Dockerfile to $IMAGE_VERSION"
+          git push origin main

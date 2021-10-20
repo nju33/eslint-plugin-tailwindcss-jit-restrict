@@ -1,0 +1,3 @@
+[submodule ".gitpod"]
+	path = .gitpod
+	url = git@github.com:nju33/.gitpod.git
