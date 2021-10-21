@@ -1,7 +1,7 @@
 'use strict'
 
 class Settings {
-  static settingName = 'tailwindcss-jit-constraint'
+  static settingName = 'tailwindcss-jit-restrict'
 
   constructor(settings = { whiteList: [] }) {
     if (!Array.isArray(settings.whiteList)) {

@@ -3,7 +3,7 @@
 const fs = require('fs')
 const path = require('path')
 const { TSESLint } = require('@typescript-eslint/experimental-utils')
-const constraint = require('../rules/constraint')
+const constraint = require('../rules/restrict')
 
 const tester = new TSESLint.RuleTester({
   parser: require.resolve('@typescript-eslint/parser'),
@@ -32,7 +32,7 @@ tester.run('constraint', constraint, {
             {
               desc: 'Remove `h-[918px]`',
               output: `
-(() => {
+;(() => {
   const className = "w-[762px]       md:top-[-400px]"
 })()
           `.trim()
@@ -68,7 +68,7 @@ tester.run('constraint', constraint, {
             {
               desc: 'Remove `md:top-[-400px]`',
               output: `
-(() => {
+;(() => {
   const className = \`w-[762px]
   h-[918px]
 

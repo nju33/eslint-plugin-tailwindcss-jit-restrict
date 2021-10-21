@@ -28,14 +28,14 @@ module.exports = {
       rules: {
         '@typescript-eslint/no-unused-vars': 'off',
         'react/react-in-jsx-scope': 'off',
-        'rulesdir/constraint': 'off'
+        'rulesdir/restrict': 'off'
       }
     }
   ],
   env: { jest: true, browser: true, node: true },
   settings: {
-    'tailwindcss-jit-constraint': {
-      whiteList: ['w-[762px]', 'h-*']
+    'tailwindcss-jit-restrict': {
+      whiteList: ['w-\\[@(762|766)px\\]', 'h-*']
     }
   }
 }
