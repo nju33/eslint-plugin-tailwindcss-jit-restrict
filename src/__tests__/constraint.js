@@ -1,5 +1,7 @@
 'use strict'
 
+const fs = require('fs')
+const path = require('path')
 const { TSESLint } = require('@typescript-eslint/experimental-utils')
 const constraint = require('../rules/constraint')
 
@@ -8,6 +10,9 @@ const tester = new TSESLint.RuleTester({
   parserOptions: {
     ecmaVersion: 2020,
     sourceType: 'module',
+    ecmaFeatures: {
+      jsx: true
+    }
   }
 })
 
@@ -15,17 +20,99 @@ tester.run('constraint', constraint, {
   valid: [],
   invalid: [
     {
-      filename: 'fixtures/test.tsx',
-      code: `
-import {use} from '@hooks/asf/sfas/asfasdf'
+      code: fs.readFileSync(
+        path.join(__dirname, '../fixtures', 'a-variable-in-a-line.ts'),
+        'utf-8'
+      ),
+      errors: [
+        { messageId: 'forbidden' },
+        {
+          messageId: 'forbidden',
+          suggestions: [
+            {
+              desc: 'Remove `h-[918px]`',
+              output: `
+(() => {
+  const className = "w-[762px]       md:top-[-400px]"
+})()
+          `.trim()
+            }
+          ]
+        },
+        { messageId: 'forbidden' }
+      ]
+    },
+    {
+      code: fs.readFileSync(
+        path.join(__dirname, '../fixtures', 'a-variable-in-a-line.ts'),
+        'utf-8'
+      ),
+      settings: {
+        'tailwindcss-jit-constraint': {
+          whiteList: ['w-[762px]', 'h-*']
+        }
+      },
+      errors: [{ messageId: 'forbidden' }]
+    },
+    {
+      code: fs.readFileSync(
+        path.join(__dirname, '../fixtures', 'a-variable-in-multiple-line.ts'),
+        'utf-8'
+      ),
+      errors: [
+        { messageId: 'forbidden' },
+        { messageId: 'forbidden' },
+        {
+          messageId: 'forbidden',
+          suggestions: [
+            {
+              desc: 'Remove `md:top-[-400px]`',
+              output: `
+(() => {
+  const className = \`w-[762px]
+  h-[918px]
 
-const a = 'text-lg bg-white'
-const b = clsx('flex', true && 'flex-column')
 
-const el = <div className={clsx(a, "transform")} id="a"></div>
-const el2 = <div className={"z-10"} id="a"></div>
-      `,
-      errors: [{ messageId: 'default' }]
+
+
+      
+
+
+
+md:bottom-[400px]\`
+})()
+              `.trim()
+            }
+          ]
+        },
+        { messageId: 'forbidden' }
+      ]
+    },
+    {
+      code: fs.readFileSync(
+        path.join(__dirname, '../fixtures', 'jsx-class-name.tsx'),
+        'utf-8'
+      ),
+      errors: [
+        { messageId: 'forbidden' },
+        { messageId: 'forbidden' },
+        { messageId: 'forbidden' }
+      ]
+    },
+    {
+      code: fs.readFileSync(
+        path.join(
+          __dirname,
+          '../fixtures',
+          'jsx-class-name-with-a-utility.tsx'
+        ),
+        'utf-8'
+      ),
+      errors: [
+        { messageId: 'forbidden' },
+        { messageId: 'forbidden' },
+        { messageId: 'forbidden' }
+      ]
     }
   ]
 })

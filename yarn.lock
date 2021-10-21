@@ -2241,6 +2241,11 @@ eslint-plugin-jest@^25.2.2:
   dependencies:
     "@typescript-eslint/experimental-utils" "^5.0.0"
 
+eslint-plugin-local-rules@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-local-rules/-/eslint-plugin-local-rules-1.1.0.tgz#5f934f685b08c96eed40b92aee7b02f03cf55f7b"
+  integrity sha512-FdPyzxakUKgZkeNM3x/vvRcB6nCjTNbui5gWALhvcaH1R6aCiD37fWtdesagcyBpEe9S9XRHAJ8CJ4rUJ3K9tQ==
+
 eslint-plugin-node@^11.1.0:
   version "11.1.0"
   resolved "https://registry.yarnpkg.com/eslint-plugin-node/-/eslint-plugin-node-11.1.0.tgz#c95544416ee4ada26740a30474eefc5402dc671d"
@@ -2282,6 +2287,11 @@ eslint-plugin-react@^7.26.1:
     resolve "^2.0.0-next.3"
     semver "^6.3.0"
     string.prototype.matchall "^4.0.5"
+
+eslint-plugin-rulesdir@^0.2.0:
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-rulesdir/-/eslint-plugin-rulesdir-0.2.0.tgz#0d729e3f11bcb1a18d9b724a29a6d1a082ac2d62"
+  integrity sha512-PPQPCsPkzF3upl1862swPA1bmDAAHKHmJJ4JTHJ11JCVCU4sycB0K5LLA/Rwr6r4VbnpScvUvHV4hqfdjvFmhQ==
 
 eslint-plugin-simple-import-sort@^7.0.0:
   version "7.0.0"

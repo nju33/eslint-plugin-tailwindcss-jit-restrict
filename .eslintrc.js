@@ -1,8 +1,11 @@
+const rulesDirPlugin = require('eslint-plugin-rulesdir')
+rulesDirPlugin.RULES_DIR = './src/rules'
+
 /**
  * @type {import('eslint').Linter.Config}
  */
 module.exports = {
-  plugins: ['simple-import-sort', 'tsdoc', 'react-hooks', 'testing-library'],
+  plugins: ['simple-import-sort', 'tsdoc', 'react-hooks', 'rulesdir'],
   rules: {
     'sort-imports': 'off',
     'import/order': 'off',
@@ -19,7 +22,20 @@ module.exports = {
     {
       files: ['*.js', '*.jsx', '*.ts', '*.tsx'],
       rules: { 'react/prop-types': 'off' }
+    },
+    {
+      files: ['src/fixtures/**/*.ts', 'src/fixtures/**/*.tsx'],
+      rules: {
+        '@typescript-eslint/no-unused-vars': 'off',
+        'react/react-in-jsx-scope': 'off',
+        'rulesdir/constraint': 'off'
+      }
     }
   ],
-  env: { jest: true, browser: true, node: true }
+  env: { jest: true, browser: true, node: true },
+  settings: {
+    'tailwindcss-jit-constraint': {
+      whiteList: ['w-[762px]', 'h-*']
+    }
+  }
 }
