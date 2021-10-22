@@ -78,7 +78,7 @@ For instance, you want only to allow not all but some, you can also be in the fo
   "rules": {
     "tailwindcss-jit-restrict/restrict": [
       "error",
-      { "whiteList": ["w-\\[$(350|500|750)px\\]"] }
+      { "whiteList": ["w-\\[@(350|500|750)px\\]"] }
     ]
   }
 }
