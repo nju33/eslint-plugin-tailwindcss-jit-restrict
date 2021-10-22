@@ -1,7 +1,12 @@
 {
   "name": "eslint-plugin-tailwindcss-jit-restrict",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "src/index.js",
+  "files": [
+    "src/index.js",
+    "src/settings.js",
+    "src/rules/*"
+  ],
   "repository": "https://github.com/nju33/eslint-plugin-tailwindcss-jit-restrict.git",
   "author": "純 <nju33.ki@gmail.com>",
   "license": "MIT",

@@ -2,19 +2,17 @@ name: Deploy to npm
 
 on:
   push:
+    branches-ignore:
+      - '*'
     tags:
-      - 'v*.*.*'
+      - 'v*'
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
-        with:
-          node-version: '14.x'
-          registry-url: 'https://registry.npmjs.org'
       - run: yarn
       - run: yarn npm publish
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
