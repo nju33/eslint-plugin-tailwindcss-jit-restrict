@@ -1,6 +1,6 @@
 # eslint-plugin-tailwindcss-jit-restrict
 
-All of or partially arbitrary values as jit mode are restricts.
+To be restricted from using all of or partially arbitrary values in jit mode.
 
 ## Install
 

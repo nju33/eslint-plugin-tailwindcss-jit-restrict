@@ -1,6 +1,6 @@
 {
   "name": "eslint-plugin-tailwindcss-jit-restrict",
-  "description": "All of or partially arbitrary values as jit mode are restricts",
+  "description": "To be restricted from using all of or partially arbitrary values in jit mode",
   "keywords": [
     "tailwindcss",
     "jit"
