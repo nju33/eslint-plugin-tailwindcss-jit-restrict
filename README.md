@@ -1,15 +1,85 @@
-# 
+# eslint-plugin-tailwindcss-jit-restrict
 
-## Gitpod Workspace
+All of or partially arbitrary values as jit mode are restricts.
 
-[![Bump the docker image version](https://github.com/nju33/gitpod-workspace/actions/workflows/bump-docker-image-version.yml/badge.svg)](https://github.com/nju33/gitpod-workspace/actions/workflows/bump-docker-image-version.yml)
+## Install
 
-### Gitpod Variables
+```bash
+yarn add --dev eslint-plugin-tailwindcss-jit-restrict
+// or
+npm install --save-dev eslint-plugin-tailwindcss-jit-restrict
+```
 
-- `GIT_USER_SIGNINGKEY` is a sign necessary when you do `git commit`
-- `NGROK_AUTHTOKEN` is ngrok's authentication
-- `GPG_SECRET_KEY` is your gpg secret key encoded in base64
-- `GH_AUTHTOKEN` is GitHub CLI's authentication
-- `BIT_SSH_SECRET_KEY` is you ssh secret key encoded in base64 for bit.dev
-- `RCLONE_CONFIG_CONTENTS` is RClone's config in base64
-- `SSH_GITHUB_PASSPHRASE`
+## How to use
+
+Firstly, you'll set `tailwindcss-jit-restrict` to `plugins`. Then, its `restrict` rule is also set.
+
+```json
+{
+  "plugins": ["tailwindcss-jit-restrict"],
+  "rules": {
+    "tailwindcss-jit-restrict/restrict": "error"
+  }
+}
+```
+
+Now, all of arbitrary values—such as `w-[500px]`—becomes eslint error.
+
+### Advanced
+
+If you want to allow some arbitrary values to be useed, you can specify white list by setting the rule option.
+
+For instance, you think that you want only to use `w-[500px]` mentioned earlier, you do that set in the following.
+
+```json
+{
+  "plugins": ["tailwindcss-jit-restrict"],
+  "rules": {
+    "tailwindcss-jit-restrict/restrict": [
+      "error",
+      { "whiteList": ["w-[500px]"] }
+    ]
+  }
+}
+```
+
+Here, you can set values of the `whiteList` as array of strings. In other words, you think that you want to add more the whiteList—for instance `h-[350px]`—, then you just add it.
+
+```json
+{
+  "plugins": ["tailwindcss-jit-restrict"],
+  "rules": {
+    "tailwindcss-jit-restrict/restrict": [
+      "error",
+      { "whiteList": ["w-[500px]", "h-[350px]"] }
+    ]
+  }
+}
+```
+
+However, if you have a lots of white list, This is awful. So, this plugin lets you write by glob.
+
+For instance, you want to allow all of arbitrary values for the `width` to be used, you should do in the following.
+
+```json
+{
+  "plugins": ["tailwindcss-jit-restrict"],
+  "rules": {
+    "tailwindcss-jit-restrict/restrict": ["error", { "whiteList": ["w-*"] }]
+  }
+}
+```
+
+For instance, you want only to allow not all but some, you can also be in the following. (You only allow `w-[350px]`, `w-[500px]` and `w-[750px]` to be used.)
+
+```json
+{
+  "plugins": ["tailwindcss-jit-restrict"],
+  "rules": {
+    "tailwindcss-jit-restrict/restrict": [
+      "error",
+      { "whiteList": ["w-\\[$(350|500|750)px\\]"] }
+    ]
+  }
+}
+```
