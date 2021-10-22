@@ -1,6 +1,11 @@
 {
   "name": "eslint-plugin-tailwindcss-jit-restrict",
-  "version": "1.0.0",
+  "description": "All of or partially arbitrary values as jit mode are restricts",
+  "keywords": [
+    "tailwindcss",
+    "jit"
+  ],
+  "version": "1.0.1",
   "main": "src/index.js",
   "files": [
     "src/index.js",
@@ -38,11 +43,9 @@
     "eslint-plugin-simple-import-sort": "^7.0.0",
     "eslint-plugin-testing-library": "^4.12.4",
     "eslint-plugin-tsdoc": "^0.2.14",
-    "husky": "^7.0.2",
     "imagemin-lint-staged": "^0.4.0",
     "jest": "^27.3.1",
     "lint-staged": "^11.2.3",
-    "pinst": "^2.1.6",
     "prettier": "^2.4.1",
     "typescript": "^4.4.4"
   },
@@ -53,7 +56,9 @@
     "test": "jest"
   },
   "dependencies": {
-    "minimatch": "^3.0.4"
+    "husky": "^7.0.2",
+    "minimatch": "^3.0.4",
+    "pinst": "^2.1.6"
   },
   "packageManager": "yarn@2.4.2"
 }
