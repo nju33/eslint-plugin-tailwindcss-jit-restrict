@@ -3,6 +3,10 @@
 class Settings {
   static settingName = 'tailwindcss-jit-restrict'
 
+  /**
+   *
+   * @param {{whiteList: string[]}} settings
+   */
   constructor(settings = { whiteList: [] }) {
     if (!Array.isArray(settings.whiteList)) {
       throw new TypeError(

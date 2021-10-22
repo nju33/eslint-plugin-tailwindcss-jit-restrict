@@ -67,5 +67,7 @@
     "panel.border": "#1a1a1a00",
     "sash.hoverBorder": "#1a1a1a00",
     "sideBar.border": "#1a1a1a00"
-  }
+  },
+  "eslint.nodePath": ".yarn/sdks",
+  "prettier.prettierPath": ".yarn/sdks/prettier/index.js"
 }

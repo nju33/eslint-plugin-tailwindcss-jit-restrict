@@ -28,7 +28,10 @@ module.exports = {
       rules: {
         '@typescript-eslint/no-unused-vars': 'off',
         'react/react-in-jsx-scope': 'off',
-        'rulesdir/restrict': 'off'
+        'rulesdir/restrict': [
+          process.env.CI === 'true' ? 'off' : 'error',
+          { whiteList: ['w-\\[@(762|766)px\\]', 'h-*'] }
+        ]
       }
     }
   ],

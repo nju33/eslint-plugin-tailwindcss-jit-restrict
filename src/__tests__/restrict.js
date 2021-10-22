@@ -3,7 +3,7 @@
 const fs = require('fs')
 const path = require('path')
 const { TSESLint } = require('@typescript-eslint/experimental-utils')
-const constraint = require('../rules/restrict')
+const restrict = require('../rules/restrict')
 
 const tester = new TSESLint.RuleTester({
   parser: require.resolve('@typescript-eslint/parser'),
@@ -16,26 +16,27 @@ const tester = new TSESLint.RuleTester({
   }
 })
 
-tester.run('constraint', constraint, {
+tester.run('restrict', restrict, {
   valid: [],
   invalid: [
     {
-      code: fs.readFileSync(
-        path.join(__dirname, '../fixtures', 'a-variable-in-a-line.ts'),
-        'utf-8'
-      ),
+      code: fs
+        .readFileSync(
+          path.join(__dirname, '../fixtures', 'a-variable-in-a-line.ts'),
+          'utf-8'
+        )
+        .trim(),
       errors: [
         { messageId: 'forbidden' },
         {
           messageId: 'forbidden',
           suggestions: [
             {
+              // @ts-ignore
               desc: 'Remove `h-[918px]`',
-              output: `
-;(() => {
-  const className = "w-[762px]       md:top-[-400px]"
-})()
-          `.trim()
+              output: `;(() => {
+  const className = 'w-[762px]       md:top-[-400px]'
+})()`
             }
           ]
         },
@@ -43,22 +44,36 @@ tester.run('constraint', constraint, {
       ]
     },
     {
-      code: fs.readFileSync(
-        path.join(__dirname, '../fixtures', 'a-variable-in-a-line.ts'),
-        'utf-8'
-      ),
+      code: fs
+        .readFileSync(
+          path.join(__dirname, '../fixtures', 'a-variable-in-a-line.ts'),
+          'utf-8'
+        )
+        .trim(),
+      options: [{ whiteList: ['w-\\[@(762|766)px\\]', 'h-*'] }],
+      errors: [{ messageId: 'forbidden' }]
+    },
+    {
+      code: fs
+        .readFileSync(
+          path.join(__dirname, '../fixtures', 'a-variable-in-a-line.ts'),
+          'utf-8'
+        )
+        .trim(),
       settings: {
-        'tailwindcss-jit-constraint': {
+        'tailwindcss-jit-restrict': {
           whiteList: ['w-[762px]', 'h-*']
         }
       },
       errors: [{ messageId: 'forbidden' }]
     },
     {
-      code: fs.readFileSync(
-        path.join(__dirname, '../fixtures', 'a-variable-in-multiple-line.ts'),
-        'utf-8'
-      ),
+      code: fs
+        .readFileSync(
+          path.join(__dirname, '../fixtures', 'a-variable-in-multiple-line.ts'),
+          'utf-8'
+        )
+        .trim(),
       errors: [
         { messageId: 'forbidden' },
         { messageId: 'forbidden' },
@@ -66,6 +81,7 @@ tester.run('constraint', constraint, {
           messageId: 'forbidden',
           suggestions: [
             {
+              // @ts-ignore
               desc: 'Remove `md:top-[-400px]`',
               output: `
 ;(() => {
@@ -89,10 +105,12 @@ md:bottom-[400px]\`
       ]
     },
     {
-      code: fs.readFileSync(
-        path.join(__dirname, '../fixtures', 'jsx-class-name.tsx'),
-        'utf-8'
-      ),
+      code: fs
+        .readFileSync(
+          path.join(__dirname, '../fixtures', 'jsx-class-name.tsx'),
+          'utf-8'
+        )
+        .trim(),
       errors: [
         { messageId: 'forbidden' },
         { messageId: 'forbidden' },
@@ -100,14 +118,16 @@ md:bottom-[400px]\`
       ]
     },
     {
-      code: fs.readFileSync(
-        path.join(
-          __dirname,
-          '../fixtures',
-          'jsx-class-name-with-a-utility.tsx'
-        ),
-        'utf-8'
-      ),
+      code: fs
+        .readFileSync(
+          path.join(
+            __dirname,
+            '../fixtures',
+            'jsx-class-name-with-a-utility.tsx'
+          ),
+          'utf-8'
+        )
+        .trim(),
       errors: [
         { messageId: 'forbidden' },
         { messageId: 'forbidden' },

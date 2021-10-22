@@ -1,6 +1,15 @@
 {
-  "*.ja.md": ["textlint"],
-  "*.+(js|ts)?(x)": ["eslint --fix", "prettier --write"],
-  "*.+(html|graphql)": ["prettier --write"],
-  "*.{png,jpeg,jpg,gif,svg}": ["imagemin-lint-staged"]
+  "*.ja.md": [
+    "textlint"
+  ],
+  "*.+(js|ts)?(x)": [
+    "cross-env CI=true eslint --fix",
+    "prettier --write"
+  ],
+  "*.+(html|graphql)": [
+    "prettier --write"
+  ],
+  "*.{png,jpeg,jpg,gif,svg}": [
+    "imagemin-lint-staged"
+  ]
 }

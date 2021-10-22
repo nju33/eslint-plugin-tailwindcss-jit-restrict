@@ -30,7 +30,7 @@ const generateRegExp = () => ARBITARY_PATTERN
 class ReportBuilder {
   /**
    *
-   * @param {object} [_value]
+   * @param {Partial<{value: string; startLine: number; startColumn: number; endLine: number; endColumn: number; rangeStart: number; rangeEnd: number}>} [_value]
    */
   constructor(_value = {}) {
     this._value = _value
@@ -98,10 +98,11 @@ class ReportBuilder {
 }
 
 class ForbiddenReport {
+  /** @type {MessageIds} */
   static messageId = 'forbidden'
 
   /**
-   * @param {ReadOnly<RuleContext>} context
+   * @param {Readonly<RuleContext>} context
    */
   constructor(context) {
     /** @readonly */
@@ -112,29 +113,46 @@ class ForbiddenReport {
    * @param {ReportBuilder} builder
    */
   report(builder) {
+    const value = builder.getValue().value
+    const startLine = builder.getValue().startLine
+    const startColumn = builder.getValue().startColumn
+    const endLine = builder.getValue().endLine
+    const endColumn = builder.getValue().endColumn
+    const rangeStart = builder.getValue().rangeStart
+    const rangeEnd = builder.getValue().rangeEnd
+
+    if (
+      startLine == null ||
+      startColumn == null ||
+      endLine == null ||
+      endColumn == null ||
+      rangeStart == null ||
+      rangeEnd == null
+    ) {
+      throw new TypeError('')
+    }
+
     this.context.report({
       messageId: ForbiddenReport.messageId,
       data: {
-        value: builder.getValue().value
+        value
       },
       loc: {
         start: {
-          line: builder.getValue().startLine,
-          column: builder.getValue().startColumn
+          line: startLine,
+          column: startColumn
         },
         end: {
-          line: builder.getValue().endLine,
-          column: builder.getValue().endColumn
+          line: endLine,
+          column: endColumn
         }
       },
       suggest: [
         {
-          desc: `Remove \`${builder.getValue().value}\``,
+          // @ts-ignore
+          desc: `Remove \`${value}\``,
           fix: (fixer) => {
-            return fixer.removeRange([
-              builder.getValue().rangeStart,
-              builder.getValue().rangeEnd
-            ])
+            return fixer.removeRange([rangeStart, rangeEnd])
           }
         }
       ]
@@ -142,13 +160,16 @@ class ForbiddenReport {
   }
 }
 
-/** @type {(context: ReadOnly<RuleContext>) => (node: HandlingNodes) => any} */
+/** @type {(context: Readonly<RuleContext>) => (node: HandlingNodes) => any} */
 const process = (context) => (node) => {
-  const settings = new Settings(context.settings[Settings.settingName])
+  const settings = new Settings(
+    /** @type {any} */ (context).options[0] ??
+      /** @type {any} */ (context).settings[Settings.settingName]
+  )
   const re = generateRegExp()
   const startLine = node.loc.start.line
   /** @type string[] */
-  let lines
+  let lines = []
   if (node.type === 'Literal') {
     lines = node.raw.split('\n')
   } else if (node.type === 'TemplateElement') {
@@ -160,7 +181,7 @@ const process = (context) => (node) => {
   lines.forEach((line, index) => {
     const currentLine = startLine + index
     const startColumn = index === 0 ? node.loc.start.column : 0
-    /** @type {RegExpExecArray} */
+    /** @type {RegExpExecArray | null} */
     let currentArbitraryValue
     while ((currentArbitraryValue = re.exec(line)) != null) {
       const value = currentArbitraryValue[0]
@@ -180,6 +201,7 @@ const process = (context) => (node) => {
       reportBuilder = reportBuilder.startColumn(
         startColumn + currentArbitraryValue.index
       )
+      reportBuilder = reportBuilder.endLine(currentLine)
       reportBuilder = reportBuilder.endColumn(
         startColumn + currentArbitraryValue.index + value.length
       )

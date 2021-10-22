@@ -1,5 +1,5 @@
 ;(() => {
-  const className = `w-[766px]
+  const className = `w-[762px]
   h-[918px]
 
 
