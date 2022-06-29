@@ -1,1 +1,1 @@
-FROM nju33/gitpod-workspace:0.2.0-1
+FROM nju33/gitpod-workspace:0.3.0-0
